@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../store/store";
 import { TodoEntry } from "./TodoEntry";
 import { useEffect, useState } from "react";
-import { addTodo, filterByText, filterByType } from "../actions/actionsTodo";
+import { addTodo, filterTodos } from "../actions/actionsTodo";
 
 const { Option } = Select;
 
@@ -28,23 +28,21 @@ export const TodoApp = () => {
   const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
 
+    if (e.target.value === query) return;
+
     setQuery(e.target.value);
-    dispatch(filterByText(e.target.value));
+    dispatch(filterTodos(e.target.value, filter));
   };
 
   const handleFilterChange = (value: boolean | null) => {
-    setFilter(value);
-    if (value === null) return;
+    if (value === filter) return;
 
-    dispatch(filterByType(value));
+    setFilter(value);
+    dispatch(filterTodos(query, value));
   };
 
   useEffect(() => {
-    dispatch(filterByText(query));
-    
-    if (filter !== null) {
-      dispatch(filterByType(filter));
-    }
+    dispatch(filterTodos(query, filter));
   }, [dispatch, todos]);
 
   return (

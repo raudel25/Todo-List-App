@@ -31,20 +31,10 @@ export const completeTodo = (todo: Todo): Action => ({
   payload: { todo },
 });
 
-export const filterByText = (query: string) => {
+export const filterTodos = (query: string,filter:boolean|null) => {
   return (dispatch: AppDispatch, getState: () => RootState) => {
     const newActives = getState().todos.filter((todo) =>
-      todo.todo.startsWith(query)
-    );
-
-    dispatch(setActiveTodos(newActives));
-  };
-};
-
-export const filterByType = (complete: boolean) => {
-  return (dispatch: AppDispatch, getState: () => RootState) => {
-    const newActives = getState().todos.filter(
-      (todo) => todo.complete === complete
+      todo.todo.startsWith(query) && (filter === null||filter===todo.complete)
     );
 
     dispatch(setActiveTodos(newActives));
