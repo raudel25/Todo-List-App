@@ -1,4 +1,4 @@
-import { Button, Checkbox, Input, Tooltip } from "antd";
+import { Button, Checkbox, Input, Tooltip, Typography } from "antd";
 import { Todo } from "../types/types";
 import { useState } from "react";
 import { useAppDispatch } from "../store/store";
@@ -53,7 +53,9 @@ export const TodoEntry = (todo: Todo) => {
       dispatch(completeTodo({ ...todo, completeDate: new Date().getTime() }));
     };
 
-    confirm(execute, "You want to mark this TODO as complete?");
+    const editMessage = edit ? "The edited note has not been saved. " : "";
+
+    confirm(execute, `${editMessage}You want to mark this TODO as complete?`);
   };
 
   const dateTooltip = () => {
@@ -81,23 +83,24 @@ export const TodoEntry = (todo: Todo) => {
   return (
     <Tooltip title={dateTooltip()}>
       <div className="entry">
+        <div className="entry__check box__center">
         <Checkbox
           checked={todo.completeDate !== undefined}
           onChange={handleComplete}
         />
-        <div className="entry__todo ml-1">
+        </div>
+        <div className="box__center ml-1">
           {edit ? (
             <Input value={input} onChange={handleInputChange} />
           ) : (
-            <span
-              className="entry__todo"
+            <Typography.Text
               style={{
                 textDecoration:
                   todo.completeDate !== undefined ? "line-through" : "none",
               }}
             >
               {todo.todo}
-            </span>
+            </Typography.Text>
           )}
         </div>
         <div className="ml-1">

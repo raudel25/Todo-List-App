@@ -1,4 +1,4 @@
-import { Button, Input, List, Select } from "antd";
+import { Button, Input, List, Select, Typography } from "antd";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../store/store";
 import { TodoEntry } from "./TodoEntry";
@@ -74,6 +74,7 @@ export const TodoApp = () => {
         </div>
 
         <div className="app__filter-todo">
+          <Typography.Text className="app__cant-todo box__center mr-1">{`Cant: ${todos.length}`}</Typography.Text>
           <Input
             value={query}
             onChange={handleQueryChange}
