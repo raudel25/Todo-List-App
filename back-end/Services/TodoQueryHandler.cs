@@ -9,7 +9,7 @@ public interface ITodoQueryHandler
 {
     public Task<Todo> Handler(GetTodo request);
 
-    public Task<IEnumerable<Todo>> Handler(GetTodos request);
+    public Task<List<Todo>> Handler(GetTodos request);
 }
 
 public class TodoQueryHandler : ITodoQueryHandler
@@ -29,7 +29,7 @@ public class TodoQueryHandler : ITodoQueryHandler
         return response;
     }
 
-    public async Task<IEnumerable<Todo>> Handler(GetTodos request)
+    public async Task<List<Todo>> Handler(GetTodos request)
     {
         return await this._context.Todos.ToListAsync();
     }
