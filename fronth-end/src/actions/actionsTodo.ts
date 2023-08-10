@@ -33,11 +33,22 @@ export const completeTodo = (todo: Todo): Action => ({
 
 export const filterTodos = (query: string, filter: boolean | undefined) => {
   return (dispatch: AppDispatch, getState: () => RootState) => {
-    const newActives = getState().todos.filter(
-      (todo) =>
-        todo.todo.startsWith(query) &&
-        (filter === undefined || filter === todo.complete)
-    );
+    const newActives = getState()
+      .todos.filter(
+        (todo) =>
+          todo.todo.startsWith(query) &&
+          (filter === undefined || filter === (todo.completeDate !== undefined))
+      )
+      .sort((t1, t2) => {
+        if (t1.completeDate === t2.completeDate) {
+          if (t1.completeDate !== undefined)
+            return t2.completeDate! - t1.completeDate;
+          return t1.createDate - t2.createDate;
+        }
+
+        if (t1.completeDate === undefined) return -1;
+        return 1;
+      });
 
     dispatch(setActiveTodos(newActives));
   };

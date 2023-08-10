@@ -16,7 +16,13 @@ export const TodoApp = () => {
   const [filter, setFilter] = useState<boolean | undefined>(undefined);
 
   const handleNew = () => {
-    dispatch(addTodo({ id: 1, todo: newTodo, complete: false }));
+    dispatch(
+      addTodo({
+        id: new Date().getTime(),
+        todo: newTodo,
+        createDate: new Date().getTime(),
+      })
+    );
     setNewTodo("");
   };
 
@@ -31,14 +37,12 @@ export const TodoApp = () => {
     if (e.target.value === query) return;
 
     setQuery(e.target.value);
-    // dispatch(filterTodos(e.target.value, filter));
   };
 
   const handleFilterChange = (value: boolean | undefined) => {
     if (value === filter) return;
 
     setFilter(value);
-    // dispatch(filterTodos(query, value));
   };
 
   useEffect(() => {

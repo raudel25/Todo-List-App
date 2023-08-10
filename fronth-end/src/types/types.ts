@@ -1,4 +1,9 @@
-export type Todo = { id: number; todo: string; complete: boolean };
+export type Todo = {
+  id: number;
+  todo: string;
+  createDate: number;
+  completeDate?: number;
+};
 
 export type State = { todos: Array<Todo>; activeTodos: Array<Todo> };
 
@@ -8,7 +13,7 @@ export enum ActionTypes {
   UpdateTodo,
   SetActiveTodos,
   SetTodos,
-  CompleteTodo
+  CompleteTodo,
 }
 
 export type Action = {
