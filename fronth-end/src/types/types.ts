@@ -8,6 +8,7 @@ export enum ActionTypes {
   UpdateTodo,
   SetActiveTodos,
   SetTodos,
+  CompleteTodo
 }
 
 export type Action = {

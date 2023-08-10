@@ -1,3 +1,4 @@
+import { AppDispatch, RootState } from "../store/store";
 import { Action, ActionTypes, Todo } from "../types/types";
 
 export const addTodo = (todo: Todo): Action => ({
@@ -15,7 +16,7 @@ export const updateTodo = (todo: Todo): Action => ({
   payload: { todo },
 });
 
-export const setActives = (todos: Array<Todo>): Action => ({
+export const setActiveTodos = (todos: Array<Todo>): Action => ({
   type: ActionTypes.SetActiveTodos,
   payload: { todos },
 });
@@ -24,3 +25,28 @@ export const setTodos = (todos: Array<Todo>): Action => ({
   type: ActionTypes.SetTodos,
   payload: { todos },
 });
+
+export const completeTodo = (todo: Todo): Action => ({
+  type: ActionTypes.CompleteTodo,
+  payload: { todo },
+});
+
+export const filterByText = (query: string) => {
+  return (dispatch: AppDispatch, getState: () => RootState) => {
+    const newActives = getState().todos.filter((todo) =>
+      todo.todo.startsWith(query)
+    );
+
+    dispatch(setActiveTodos(newActives));
+  };
+};
+
+export const filterByType = (complete: boolean) => {
+  return (dispatch: AppDispatch, getState: () => RootState) => {
+    const newActives = getState().todos.filter(
+      (todo) => todo.complete === complete
+    );
+
+    dispatch(setActiveTodos(newActives));
+  };
+};

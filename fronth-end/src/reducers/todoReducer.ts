@@ -24,6 +24,16 @@ export const todoReducer = (
         ),
       };
 
+    case ActionTypes.CompleteTodo:
+      return {
+        ...state,
+        todos: state.todos.map((t) =>
+          t.id === action.payload.todo!.id
+            ? { ...action.payload.todo!, complete: true }
+            : t
+        ),
+      };
+
     case ActionTypes.SetTodos:
       return {
         ...state,
