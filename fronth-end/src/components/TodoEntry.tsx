@@ -6,6 +6,7 @@ import { completeTodo, removeTodo, updateTodo } from "../actions/actionsTodo";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
 import { CheckOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import moment from "moment";
+import { Modal } from "antd";
 
 export const TodoEntry = (todo: Todo) => {
   const dispatch = useAppDispatch();
@@ -33,7 +34,11 @@ export const TodoEntry = (todo: Todo) => {
   };
 
   const handleRemove = () => {
-    dispatch(removeTodo(todo));
+    const execute = () => {
+      dispatch(removeTodo(todo));
+    };
+
+    confirm(execute, "You want delete this TODO");
   };
 
   const handleComplete = (e: CheckboxChangeEvent) => {
@@ -43,8 +48,12 @@ export const TodoEntry = (todo: Todo) => {
       return;
     }
 
-    setEdit(false);
-    dispatch(completeTodo({ ...todo, completeDate: new Date().getTime() }));
+    const execute = () => {
+      setEdit(false);
+      dispatch(completeTodo({ ...todo, completeDate: new Date().getTime() }));
+    };
+
+    confirm(execute, "You want to mark this TODO as complete?");
   };
 
   const dateTooltip = () => {
@@ -57,6 +66,16 @@ export const TodoEntry = (todo: Todo) => {
       : "";
 
     return `${strCreate}${strComplete}`;
+  };
+
+  const confirm = (execute: () => void, message: string) => {
+    Modal.confirm({
+      title: "Confirmation",
+      content: message,
+      onOk() {
+        execute();
+      },
+    });
   };
 
   return (
