@@ -1,0 +1,31 @@
+.app__main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.app__box {
+  height: 100vh;
+  display: flex;
+  position: relative;
+
+  flex-direction: column;
+  justify-content: space-between;
+
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+.app__new-todo {
+  display: flex;
+}
+
+.app__list-todo {
+  overflow-y: hidden;
+}
+
+.app__filter-todo {
+  display: flex;
+}

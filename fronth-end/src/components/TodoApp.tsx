@@ -46,32 +46,40 @@ export const TodoApp = () => {
   }, [dispatch, todos]);
 
   return (
-    <div>
-      <div>
-        <Button onClick={handleNew}>Add</Button>
-        <Input
-          placeholder="Add"
-          value={newTodo}
-          onChange={handleNewTodoChange}
-        />
-      </div>
-      <div>
-        <List
-          dataSource={activeTodos}
-          renderItem={(item) => <TodoEntry key={item.id} {...item} />}
-        ></List>
-      </div>
+    <div className="app__main">
+      <div className="app__box">
+        <div className="app__new-todo">
+          <Button onClick={handleNew} type="primary" className="mr-1">
+            Add
+          </Button>
+          <Input
+            placeholder="Add new Todo"
+            value={newTodo}
+            onChange={handleNewTodoChange}
+          />
+        </div>
+        <div className="app__list-todo mt-5 mb-5">
+          <List
+            dataSource={activeTodos}
+            renderItem={(item) => (
+              <div className="mt-1">
+                <TodoEntry key={item.id} {...item} />
+              </div>
+            )}
+          ></List>
+        </div>
 
-      <div>
-        <Input value={query} onChange={handleQueryChange} />
-        <Select<boolean | null>
-          allowClear
-          onChange={handleFilterChange}
-          placeholder="Filtrar por estado"
-        >
-          <Option value={true}>Completado</Option>
-          <Option value={false}>No completado</Option>
-        </Select>
+        <div className="app__filter-todo">
+          <Input value={query} onChange={handleQueryChange} className="mr-1" placeholder="Search"/>
+          <Select<boolean | null>
+            allowClear
+            onChange={handleFilterChange}
+            placeholder="Filter"
+          >
+            <Option value={true}>Check</Option>
+            <Option value={false}>No Check</Option>
+          </Select>
+        </div>
       </div>
     </div>
   );

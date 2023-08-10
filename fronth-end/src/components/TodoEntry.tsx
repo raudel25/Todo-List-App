@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useAppDispatch } from "../store/store";
 import { completeTodo, removeTodo, updateTodo } from "../actions/actionsTodo";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 export const TodoEntry = (todo: Todo) => {
   const dispatch = useAppDispatch();
@@ -45,15 +46,36 @@ export const TodoEntry = (todo: Todo) => {
   };
 
   return (
-    <div>
-      <Checkbox checked={todo.complete} onChange={handleComplete}></Checkbox>
-      {edit ? (
-        <Input value={input} onChange={handleInputChange} />
-      ) : (
-        <span>{todo.todo}</span>
-      )}
-      <Button onClick={handleEdit}></Button>
-      <Button onClick={handleRemove}></Button>
+    <div className="entry">
+      <Checkbox
+        className="entry__check"
+        checked={todo.complete}
+        onChange={handleComplete}
+      >
+        {edit ? (
+          <Input value={input} onChange={handleInputChange} />
+        ) : (
+          <span
+            className="entry__todo"
+            style={{ textDecoration: todo.complete ? "line-through" : "none" }}
+          >
+            {todo.todo}
+          </span>
+        )}
+      </Checkbox>
+      <div>
+        <Button type="dashed" className="entry__btn" onClick={handleEdit}>
+          <EditOutlined />
+        </Button>
+        <Button
+          type="dashed"
+          className="entry__btn ml-1"
+          danger={true}
+          onClick={handleRemove}
+        >
+          <DeleteOutlined />
+        </Button>
+      </div>
     </div>
   );
 };
