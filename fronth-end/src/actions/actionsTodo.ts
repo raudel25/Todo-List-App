@@ -31,10 +31,13 @@ export const completeTodo = (todo: Todo): Action => ({
   payload: { todo },
 });
 
-export const filterTodos = (query: string,filter:boolean|null) => {
+export const filterTodos = (query: string, filter: boolean | undefined) => {
+  console.log(filter);
   return (dispatch: AppDispatch, getState: () => RootState) => {
-    const newActives = getState().todos.filter((todo) =>
-      todo.todo.startsWith(query) && (filter === null||filter===todo.complete)
+    const newActives = getState().todos.filter(
+      (todo) =>
+        todo.todo.startsWith(query) &&
+        (filter === undefined || filter === todo.complete)
     );
 
     dispatch(setActiveTodos(newActives));

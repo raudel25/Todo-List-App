@@ -13,7 +13,7 @@ export const TodoApp = () => {
 
   const [newTodo, setNewTodo] = useState("");
   const [query, setQuery] = useState("");
-  const [filter, setFilter] = useState<boolean | null>(null);
+  const [filter, setFilter] = useState<boolean | undefined>(undefined);
 
   const handleNew = () => {
     dispatch(addTodo({ id: 1, todo: newTodo, complete: false }));
@@ -34,7 +34,7 @@ export const TodoApp = () => {
     dispatch(filterTodos(e.target.value, filter));
   };
 
-  const handleFilterChange = (value: boolean | null) => {
+  const handleFilterChange = (value: boolean | undefined) => {
     if (value === filter) return;
 
     setFilter(value);
@@ -70,8 +70,13 @@ export const TodoApp = () => {
         </div>
 
         <div className="app__filter-todo">
-          <Input value={query} onChange={handleQueryChange} className="mr-1" placeholder="Search"/>
-          <Select<boolean | null>
+          <Input
+            value={query}
+            onChange={handleQueryChange}
+            className="mr-1"
+            placeholder="Search"
+          />
+          <Select<boolean | undefined>
             allowClear
             onChange={handleFilterChange}
             placeholder="Filter"
