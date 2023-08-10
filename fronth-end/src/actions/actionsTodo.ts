@@ -32,7 +32,6 @@ export const completeTodo = (todo: Todo): Action => ({
 });
 
 export const filterTodos = (query: string, filter: boolean | undefined) => {
-  console.log(filter);
   return (dispatch: AppDispatch, getState: () => RootState) => {
     const newActives = getState().todos.filter(
       (todo) =>

@@ -31,19 +31,19 @@ export const TodoApp = () => {
     if (e.target.value === query) return;
 
     setQuery(e.target.value);
-    dispatch(filterTodos(e.target.value, filter));
+    // dispatch(filterTodos(e.target.value, filter));
   };
 
   const handleFilterChange = (value: boolean | undefined) => {
     if (value === filter) return;
 
     setFilter(value);
-    dispatch(filterTodos(query, value));
+    // dispatch(filterTodos(query, value));
   };
 
   useEffect(() => {
     dispatch(filterTodos(query, filter));
-  }, [dispatch, todos]);
+  }, [dispatch, todos, query, filter]);
 
   return (
     <div className="app__main">
