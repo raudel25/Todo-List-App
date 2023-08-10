@@ -17,6 +17,8 @@ var connectionString = configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<TodoContext>(options =>
     options.UseMySQL(connectionString!));
 
+builder.Services.AddScoped<ITodoCommandHandler, TodoCommandHandler>();
+builder.Services.AddScoped<ITodoQueryHandler, TodoQueryHandler>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

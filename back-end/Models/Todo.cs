@@ -9,8 +9,8 @@ public class Todo
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
-    public string TodoItem { get; set; }
-    
+    public string TodoItem { get; set; } = null!;
+
     public long CreateDate { get; set; }
 
     public long? CompleteDate { get; set; }
