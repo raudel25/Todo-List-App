@@ -23,7 +23,7 @@ public class TodoQueryHandler : ITodoQueryHandler
 
     public async Task<Todo> Handler(GetTodo request)
     {
-        var response = await this._context.Todos.FindAsync(request.Id);
+        var response = await this._context.Todos.SingleOrDefaultAsync(t=>request.Id==t.Id);
 
         if (response is null) throw new NotFoundException($"Not found Todo with id{request.Id}");
         return response;

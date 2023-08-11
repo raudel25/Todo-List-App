@@ -35,7 +35,7 @@ public class TodoController : ControllerBase
             return NotFound(new { e.Message });
         }
     }
-    
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Todo>>> Get()
     {
@@ -45,23 +45,23 @@ public class TodoController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post(CreateTodo request)
+    public async Task<ActionResult<int>> Post(CreateTodo request)
     {
-        await this._commandHandler.Handler(request);
-        return Ok();
+        var id = await this._commandHandler.Handler(request);
+        return id;
     }
-    
+
     [HttpPut]
     public async Task<IActionResult> Put(UpdateTodo request)
     {
         await this._commandHandler.Handler(request);
         return Ok();
     }
-    
-    [HttpDelete]
-    public async Task<IActionResult> Put(RemoveTodo request)
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id)
     {
-        await this._commandHandler.Handler(request);
+        await this._commandHandler.Handler(new RemoveTodo { Id = id });
         return Ok();
     }
 }

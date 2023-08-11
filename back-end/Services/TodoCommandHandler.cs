@@ -1,4 +1,5 @@
 using back_end.Commands;
+using Microsoft.EntityFrameworkCore;
 
 namespace back_end.Services;
 
@@ -40,7 +41,11 @@ public class TodoCommandHandler : ITodoCommandHandler
 
     public async Task Handler(RemoveTodo request)
     {
-        this._context.Remove(request.Id);
+        var todo = await this._context.Todos.SingleOrDefaultAsync(t => t.Id == request.Id);
+
+        if (todo is null) return;
+
+        this._context.Remove(todo);
         await this._context.SaveChangesAsync();
     }
 }

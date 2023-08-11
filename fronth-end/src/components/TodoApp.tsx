@@ -3,13 +3,22 @@ import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../store/store";
 import { TodoEntry } from "./TodoEntry";
 import { useEffect, useState } from "react";
-import { addTodo, filterTodos } from "../actions/actionsTodo";
+import {
+  filterTodos,
+  startAddTodo,
+  startLoadTodos,
+} from "../actions/actionsTodo";
 
 const { Option } = Select;
 
 export const TodoApp = () => {
-  const { activeTodos, todos } = useSelector((state: RootState) => state);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(startLoadTodos());
+  }, [dispatch]);
+
+  const { activeTodos, todos } = useSelector((state: RootState) => state);
 
   const [newTodo, setNewTodo] = useState("");
   const [query, setQuery] = useState("");
@@ -17,9 +26,8 @@ export const TodoApp = () => {
 
   const handleNew = () => {
     dispatch(
-      addTodo({
-        id: new Date().getTime(),
-        todo: newTodo,
+      startAddTodo({
+        todoItem: newTodo,
         createDate: new Date().getTime(),
       })
     );

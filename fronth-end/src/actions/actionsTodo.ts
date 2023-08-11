@@ -1,5 +1,7 @@
+import { fetchTodo } from "../helpers/fetch";
 import { AppDispatch, RootState } from "../store/store";
-import { Action, ActionTypes, Todo } from "../types/types";
+import { Action, ActionTypes, Todo, TodoNoId } from "../types/types";
+import { Modal } from "antd";
 
 export const addTodo = (todo: Todo): Action => ({
   type: ActionTypes.AddTodo,
@@ -26,17 +28,12 @@ export const setTodos = (todos: Array<Todo>): Action => ({
   payload: { todos },
 });
 
-export const completeTodo = (todo: Todo): Action => ({
-  type: ActionTypes.CompleteTodo,
-  payload: { todo },
-});
-
 export const filterTodos = (query: string, filter: boolean | undefined) => {
   return (dispatch: AppDispatch, getState: () => RootState) => {
     const newActives = getState()
       .todos.filter(
         (todo) =>
-          todo.todo.startsWith(query) &&
+          todo.todoItem.startsWith(query) &&
           (filter === undefined || filter === (todo.completeDate !== undefined))
       )
       .sort((t1, t2) => {
@@ -51,5 +48,116 @@ export const filterTodos = (query: string, filter: boolean | undefined) => {
       });
 
     dispatch(setActiveTodos(newActives));
+  };
+};
+
+export const startLoadTodos = () => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      const resp = await fetchTodo("todo", {}, "GET");
+
+      const body = await resp.json();
+
+      if (resp.ok) {
+        const todos = body.map(
+          (t: {
+            id: number;
+            createDate: number;
+            completeDate: null | number;
+          }) => ({
+            ...t,
+            completeDate: t.completeDate ? t.completeDate : undefined,
+          })
+        );
+
+        dispatch(setTodos(todos));
+      } else {
+        Modal.error({
+          title: "Error",
+          content: "Connection error",
+        });
+      }
+    } catch {
+      Modal.error({
+        title: "Error",
+        content: "Connection error",
+      });
+    }
+  };
+};
+
+export const startAddTodo = (todo: TodoNoId) => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      const request = todo.completeDate
+        ? todo
+        : { ...todo, completeDate: null };
+
+      const resp = await fetchTodo("todo", request, "POST");
+
+      const body = await resp.json();
+
+      if (resp.ok) {
+        dispatch(addTodo({ ...todo, id: body }));
+      } else {
+        Modal.error({
+          title: "Error",
+          content: "Connection error",
+        });
+      }
+    } catch {
+      Modal.error({
+        title: "Error",
+        content: "Connection error",
+      });
+    }
+  };
+};
+
+export const startUpdateTodo = (todo: Todo) => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      const request = todo.completeDate
+        ? todo
+        : { ...todo, completeDate: null };
+
+      const resp = await fetchTodo("todo", request, "PUT");
+
+      if (resp.ok) {
+        dispatch(updateTodo(todo));
+      } else {
+        Modal.error({
+          title: "Error",
+          content: "Connection error",
+        });
+      }
+    } catch {
+      Modal.error({
+        title: "Error",
+        content: "Connection error",
+      });
+    }
+  };
+};
+
+export const startRemoveTodo = (todo: Todo) => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      const resp = await fetchTodo(`todo/${todo.id}`, {}, "DELETE");
+
+      if (resp.ok) {
+        dispatch(removeTodo(todo));
+      } else {
+        Modal.error({
+          title: "Error",
+          content: "Connection error",
+        });
+      }
+    } catch {
+      Modal.error({
+        title: "Error",
+        content: "Connection error",
+      });
+    }
   };
 };

@@ -1,6 +1,12 @@
 export type Todo = {
   id: number;
-  todo: string;
+  todoItem: string;
+  createDate: number;
+  completeDate?: number;
+};
+
+export type TodoNoId = {
+  todoItem: string;
   createDate: number;
   completeDate?: number;
 };

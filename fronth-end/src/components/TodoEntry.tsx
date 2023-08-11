@@ -2,7 +2,7 @@ import { Button, Checkbox, Input, Tooltip, Typography } from "antd";
 import { Todo } from "../types/types";
 import { useState } from "react";
 import { useAppDispatch } from "../store/store";
-import { completeTodo, removeTodo, updateTodo } from "../actions/actionsTodo";
+import { startRemoveTodo, startUpdateTodo } from "../actions/actionsTodo";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
 import { CheckOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import moment from "moment";
@@ -11,7 +11,7 @@ import { Modal } from "antd";
 export const TodoEntry = (todo: Todo) => {
   const dispatch = useAppDispatch();
 
-  const [input, setInput] = useState(todo.todo);
+  const [input, setInput] = useState(todo.todoItem);
   const [edit, setEdit] = useState(false);
 
   const handleEdit = () => {
@@ -20,11 +20,11 @@ export const TodoEntry = (todo: Todo) => {
     }
 
     if (edit) {
-      dispatch(updateTodo({ ...todo, todo: input }));
+      dispatch(startUpdateTodo({ ...todo, todoItem: input }));
     }
 
     setEdit(!edit);
-    setInput(todo.todo);
+    setInput(todo.todoItem);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +35,7 @@ export const TodoEntry = (todo: Todo) => {
 
   const handleRemove = () => {
     const execute = () => {
-      dispatch(removeTodo(todo));
+      dispatch(startRemoveTodo(todo));
     };
 
     confirm(execute, "You want delete this TODO");
@@ -50,7 +50,9 @@ export const TodoEntry = (todo: Todo) => {
 
     const execute = () => {
       setEdit(false);
-      dispatch(completeTodo({ ...todo, completeDate: new Date().getTime() }));
+      dispatch(
+        startUpdateTodo({ ...todo, completeDate: new Date().getTime() })
+      );
     };
 
     const editMessage = edit ? "The edited note has not been saved. " : "";
@@ -84,10 +86,10 @@ export const TodoEntry = (todo: Todo) => {
     <Tooltip title={dateTooltip()}>
       <div className="entry">
         <div className="entry__check box__center">
-        <Checkbox
-          checked={todo.completeDate !== undefined}
-          onChange={handleComplete}
-        />
+          <Checkbox
+            checked={todo.completeDate !== undefined}
+            onChange={handleComplete}
+          />
         </div>
         <div className="box__center ml-1">
           {edit ? (
@@ -99,7 +101,7 @@ export const TodoEntry = (todo: Todo) => {
                   todo.completeDate !== undefined ? "line-through" : "none",
               }}
             >
-              {todo.todo}
+              {todo.todoItem}
             </Typography.Text>
           )}
         </div>
