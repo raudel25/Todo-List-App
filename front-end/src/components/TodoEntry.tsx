@@ -7,12 +7,15 @@ import { CheckboxChangeEvent } from "antd/es/checkbox";
 import { CheckOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { Modal } from "antd";
+import { useTranslation } from "react-i18next";
 
 export const TodoEntry = (todo: Todo) => {
   const dispatch = useAppDispatch();
 
   const [input, setInput] = useState(todo.todoItem);
   const [edit, setEdit] = useState(false);
+
+  const { t } = useTranslation();
 
   const handleEdit = () => {
     if (todo.completeDate !== undefined) {
@@ -38,7 +41,7 @@ export const TodoEntry = (todo: Todo) => {
       dispatch(startRemoveTodo(todo));
     };
 
-    confirm(execute, "You want delete this TODO");
+    confirm(execute, t("You want delete this TODO"));
   };
 
   const handleComplete = (e: CheckboxChangeEvent) => {
@@ -55,18 +58,21 @@ export const TodoEntry = (todo: Todo) => {
       );
     };
 
-    const editMessage = edit ? "The edited note has not been saved. " : "";
+    const editMessage = edit ? t("The edited TODO has not been saved. ") : "";
 
-    confirm(execute, `${editMessage}You want to mark this TODO as complete?`);
+    confirm(
+      execute,
+      `${editMessage}${t("You want to mark this TODO as complete")}?`
+    );
   };
 
   const dateTooltip = () => {
     const create = moment(todo.createDate);
     const complete = todo.completeDate ? moment(todo.completeDate) : null;
 
-    const strCreate = `Create: ${create.format("DD/MM/YYYY HH:mm:ss")}`;
+    const strCreate = `${t("Create")}: ${create.format("DD/MM/YYYY HH:mm:ss")}`;
     const strComplete = complete
-      ? ` Complete: ${complete.format("DD/MM/YYYY HH:mm:ss")}`
+      ? ` ${t("Complete")}: ${complete.format("DD/MM/YYYY HH:mm:ss")}`
       : "";
 
     return `${strCreate}${strComplete}`;
@@ -74,7 +80,7 @@ export const TodoEntry = (todo: Todo) => {
 
   const confirm = (execute: () => void, message: string) => {
     Modal.confirm({
-      title: "Confirmation",
+      title: t("Confirmation"),
       content: message,
       onOk() {
         execute();

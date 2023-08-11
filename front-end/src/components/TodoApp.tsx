@@ -8,6 +8,8 @@ import {
   startAddTodo,
   startLoadTodos,
 } from "../actions/actionsTodo";
+import { useTranslation } from "react-i18next";
+import { LanguageSelector } from "./LanguageSelector";
 
 const { Option } = Select;
 
@@ -24,11 +26,13 @@ export const TodoApp = () => {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<boolean | undefined>(undefined);
 
+  const { t } = useTranslation();
+
   const handleNew = () => {
     if (newTodo === "") {
       Modal.error({
         title: "Error",
-        content: "The new TODO is empty",
+        content: t("The new TODO is empty"),
       });
       return;
     }
@@ -67,13 +71,16 @@ export const TodoApp = () => {
 
   return (
     <div className="app__main">
+      <div className="app__language">
+            <LanguageSelector />
+          </div>
       <div className="app__box">
         <div className="app__new-todo">
           <Button onClick={handleNew} type="primary" className="mr-1">
-            Add
+            {t("Add")}
           </Button>
           <Input
-            placeholder="Add new Todo"
+            placeholder={t("Add new Todo")}
             value={newTodo}
             onChange={handleNewTodoChange}
           />
@@ -90,20 +97,22 @@ export const TodoApp = () => {
         </div>
 
         <div className="app__filter-todo">
-          <Typography.Text className="app__cant-todo box__center mr-1">{`Cant: ${todos.length}`}</Typography.Text>
+          <Typography.Text className="app__cant-todo box__center mr-1">{`${t(
+            "Cant"
+          )}: ${todos.length}`}</Typography.Text>
           <Input
             value={query}
             onChange={handleQueryChange}
             className="mr-1"
-            placeholder="Search"
+            placeholder={t("Search")}
           />
           <Select<boolean | undefined>
             allowClear
             onChange={handleFilterChange}
-            placeholder="Filter"
+            placeholder={t("Filter")}
           >
-            <Option value={true}>Check</Option>
-            <Option value={false}>No Check</Option>
+            <Option value={true}>{t("Complete")}</Option>
+            <Option value={false}>{`No ${t("Complete")}`}</Option>
           </Select>
         </div>
       </div>
