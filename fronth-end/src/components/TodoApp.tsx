@@ -1,4 +1,4 @@
-import { Button, Input, List, Select, Typography } from "antd";
+import { Button, Input, List, Select, Typography, Modal } from "antd";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../store/store";
 import { TodoEntry } from "./TodoEntry";
@@ -25,6 +25,14 @@ export const TodoApp = () => {
   const [filter, setFilter] = useState<boolean | undefined>(undefined);
 
   const handleNew = () => {
+    if (newTodo === "") {
+      Modal.error({
+        title: "Error",
+        content: "The new TODO is empty",
+      });
+      return;
+    }
+
     dispatch(
       startAddTodo({
         todoItem: newTodo,
