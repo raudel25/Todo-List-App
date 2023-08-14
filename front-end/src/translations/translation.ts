@@ -7,7 +7,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
   en: {
     translation: {
-      "All":"All",
+      All: "All",
       "The new TODO is empty": "The new TODO is empty",
       "Add new TODO": "Add new TODO",
       Add: "Add",
@@ -22,11 +22,12 @@ const resources = {
         "You want to mark this TODO as complete",
       Create: "Create",
       Confirmation: "Confirmation",
+      "The new TODO already exists": "The new TODO already exists",
     },
   },
   es: {
     translation: {
-      "All":"Todos",
+      All: "Todos",
       "The new TODO is empty": "El nuevo TODO está vacío",
       "Add new TODO": "Añadir nuevo TODO",
       Add: "Añadir",
@@ -41,6 +42,7 @@ const resources = {
         "Quiere marcar este TODO como completado",
       Create: "Creado",
       Confirmation: "Confirmación",
+      "The new TODO already exists": "El nuevo TODO ya existe",
     },
   },
 };

@@ -39,6 +39,14 @@ export const TodoApp = () => {
       return;
     }
 
+    if (todos.filter((todo) => todo.todoItem === newTodo).length !== 0) {
+      Modal.error({
+        title: "Error",
+        content: t("The new TODO already exists"),
+      });
+      return;
+    }
+
     dispatch(
       startAddTodo({
         todoItem: newTodo,
@@ -85,6 +93,7 @@ export const TodoApp = () => {
             placeholder={t("Add new TODO")}
             value={newTodo}
             onChange={handleNewTodoChange}
+            onPressEnter={handleNew}
           />
         </div>
         <div className="app__list-todo mt-5 mb-5">
