@@ -48,9 +48,10 @@ export const filterTodos = (query: string, filter: Filter) => {
           todo.todoItem.startsWith(query) && filterTodo(todo.completeDate)
       )
       .sort((t1, t2) => {
-        if (t1.completeDate === t2.completeDate) {
-          if (t1.completeDate !== undefined)
+        if (typeof t1.completeDate === typeof t2.completeDate) {
+          if (t1.completeDate !== undefined) {
             return t2.completeDate! - t1.completeDate;
+          }
           return t1.createDate - t2.createDate;
         }
 
