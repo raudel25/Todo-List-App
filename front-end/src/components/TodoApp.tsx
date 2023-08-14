@@ -10,6 +10,7 @@ import {
 } from "../actions/actionsTodo";
 import { useTranslation } from "react-i18next";
 import { LanguageSelector } from "./LanguageSelector";
+import { Filter } from "../types/types";
 
 const { Option } = Select;
 
@@ -20,11 +21,12 @@ export const TodoApp = () => {
     dispatch(startLoadTodos());
   }, [dispatch]);
 
-  const { activeTodos, todos } = useSelector((state: RootState) => state);
+  const activeTodos = useSelector((state: RootState) => state.activeTodos);
+  const todos = useSelector((state: RootState) => state.todos);
 
   const [newTodo, setNewTodo] = useState("");
   const [query, setQuery] = useState("");
-  const [filter, setFilter] = useState<boolean | undefined>(undefined);
+  const [filter, setFilter] = useState(Filter.All);
 
   const { t } = useTranslation();
 
@@ -59,7 +61,7 @@ export const TodoApp = () => {
     setQuery(e.target.value);
   };
 
-  const handleFilterChange = (value: boolean | undefined) => {
+  const handleFilterChange = (value: Filter) => {
     if (value === filter) return;
 
     setFilter(value);
@@ -72,15 +74,15 @@ export const TodoApp = () => {
   return (
     <div className="app__main">
       <div className="app__language">
-            <LanguageSelector />
-          </div>
+        <LanguageSelector />
+      </div>
       <div className="app__box">
         <div className="app__new-todo">
           <Button onClick={handleNew} type="primary" className="mr-1">
             {t("Add")}
           </Button>
           <Input
-            placeholder={t("Add new Todo")}
+            placeholder={t("Add new TODO")}
             value={newTodo}
             onChange={handleNewTodoChange}
           />
@@ -106,13 +108,15 @@ export const TodoApp = () => {
             className="mr-1"
             placeholder={t("Search")}
           />
-          <Select<boolean | undefined>
-            allowClear
+          <Select<Filter>
+            popupMatchSelectWidth={false}
             onChange={handleFilterChange}
             placeholder={t("Filter")}
+            value={filter}
           >
-            <Option value={true}>{t("Complete")}</Option>
-            <Option value={false}>{`No ${t("Complete")}`}</Option>
+            <Option value={Filter.All}>{t("All")}</Option>
+            <Option value={Filter.Check}>{t("Complete")}</Option>
+            <Option value={Filter.NoCheck}>{`No ${t("Complete")}`}</Option>
           </Select>
         </div>
       </div>

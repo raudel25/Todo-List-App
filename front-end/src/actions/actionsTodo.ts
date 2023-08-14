@@ -1,6 +1,6 @@
 import { fetchTodo } from "../helpers/fetch";
 import { AppDispatch, RootState } from "../store/store";
-import { Action, ActionTypes, Todo, TodoNoId } from "../types/types";
+import { Action, ActionTypes, Filter, Todo, TodoNoId } from "../types/types";
 import { Modal } from "antd";
 
 export const addTodo = (todo: Todo): Action => ({
@@ -28,13 +28,24 @@ export const setTodos = (todos: Array<Todo>): Action => ({
   payload: { todos },
 });
 
-export const filterTodos = (query: string, filter: boolean | undefined) => {
+export const filterTodos = (query: string, filter: Filter) => {
   return (dispatch: AppDispatch, getState: () => RootState) => {
+    const filterTodo = (todoComplete: number | undefined) => {
+      switch (filter) {
+        case Filter.All:
+          return true;
+
+        case Filter.Check:
+          return todoComplete !== undefined;
+
+        case Filter.NoCheck:
+          return todoComplete === undefined;
+      }
+    };
     const newActives = getState()
       .todos.filter(
         (todo) =>
-          todo.todoItem.startsWith(query) &&
-          (filter === undefined || filter === (todo.completeDate !== undefined))
+          todo.todoItem.startsWith(query) && filterTodo(todo.completeDate)
       )
       .sort((t1, t2) => {
         if (t1.completeDate === t2.completeDate) {

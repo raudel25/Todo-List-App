@@ -7,8 +7,9 @@ import { initReactI18next } from "react-i18next";
 const resources = {
   en: {
     translation: {
+      "All":"All",
       "The new TODO is empty": "The new TODO is empty",
-      "Add new Todo": "Add new Todo",
+      "Add new TODO": "Add new TODO",
       Add: "Add",
       Search: "Search",
       Filter: "Filter",
@@ -25,8 +26,9 @@ const resources = {
   },
   es: {
     translation: {
+      "All":"Todos",
       "The new TODO is empty": "El nuevo TODO está vacío",
-      "Add new Todo": "Añadir nuevo TODO",
+      "Add new TODO": "Añadir nuevo TODO",
       Add: "Añadir",
       Search: "Buscar",
       Filter: "Filtrar",

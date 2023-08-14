@@ -22,6 +22,12 @@ export enum ActionTypes {
   CompleteTodo,
 }
 
+export enum Filter {
+  All,
+  Check,
+  NoCheck,
+}
+
 export type Action = {
   type: ActionTypes;
   payload: { todo?: Todo; todos?: Array<Todo> };
