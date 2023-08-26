@@ -1,14 +1,25 @@
-# Build environment
-FROM node:12.2.0-alpine as build
-WORKDIR /app
-COPY package.json ./
-COPY package-lock.json ./
-RUN npm ci --silent
-COPY . ./
-RUN npm run build
+# Inicia desde una imagen base con Node.js
+FROM node:lts-alpine
 
-# Production environment
-FROM nginx:1.16.0-alpine
-COPY --from=build /app/build /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# Establece el directorio de trabajo en el contenedor
+WORKDIR /app
+
+# Agrega `/app/node_modules/.bin` a $PATH
+ENV PATH /app/node_modules/.bin:$PATH
+
+# Instala las dependencias de la aplicación
+# Copia package.json y yarn.lock
+COPY package.json ./
+COPY yarn.lock ./
+
+# Instala node-sass
+RUN yarn add node-sass
+
+# Instala todas las dependencias
+RUN yarn
+
+# Copia el resto de los archivos de la aplicación
+COPY . ./
+
+# Comando para iniciar la aplicación
+CMD ["yarn", "start"]
